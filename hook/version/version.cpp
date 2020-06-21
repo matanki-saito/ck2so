@@ -28,10 +28,10 @@ namespace Version {
 		Ck2Version version;
 
 		// CK2 v3.x.
-		BytePattern::temp_instance().find_pattern("00 00 33 2E ? 2E");
+		BytePattern::temp_instance().find_pattern("00 33 2E 33 2E 33");
 		if (BytePattern::temp_instance().count() > 0) {
 			// ??を取得する
-			Pattern ptn = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(0x2), true);
+			Pattern ptn = Injector::ReadMemory<Pattern>(BytePattern::temp_instance().get_first().address(0x1), true);
 
 			switch (ptn.calVer()) {
 			case 330:
@@ -47,7 +47,7 @@ namespace Version {
 			BytePattern::LoggingInfo(versionString(version));
 		}
 		else {
-			version = UNKNOWN;
+			version = v3_3_0;
 		}
 		
 		options->version = version;

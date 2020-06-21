@@ -72,18 +72,17 @@ BytePattern::BytePattern(){
 BytePattern& BytePattern::setModule(){
 	// Get self process file name
 	// https://qiita.com/maaato414/items/70790af74e0cae39b11d
-	char prgName[64] = {0};
 	char prgPath[256] = { 0 };
 
 	readlink("/proc/self/exe", prgPath, sizeof(prgPath));
-	sprintf(prgName, "%s", basename(prgPath));
-	
-	// TODO:  findだとテキストが存在するだけで一致してしまうので/とスペースを入れているが自身のプログラムから取得するべき
-	return setModule("/ck2 ");
+
+	// findだとテキストが存在するだけで一致してしまうので全一致
+	return setModule(prgPath);
 }
 
 BytePattern& BytePattern::setModule(string moduleName){
 	this->getModuleRanges(moduleName);
+	printf("%s",moduleName.c_str());
 	return *this;
 }
 
@@ -103,10 +102,17 @@ void BytePattern::getModuleRanges(string moduleName){
 	std::string maps = "/proc/self/maps";
 	std::fstream fs(maps, std::ios::in);
 
+	if(moduleName == "/usr/bin/bash"){
+		// TODO: おそらくgdb関連だと思うがここに入ってくるルートがある
+		return;
+	}
+
+	printf("moduleName: %s\n", moduleName.c_str());
+
 	std::string line;
 	while (std::getline(fs, line)) {
 		if (line.find(moduleName) != std::string::npos) {
-			printf("%s\n", line.c_str());
+			printf("Match: %s\n", line.c_str());
 
 			pair<uintptr_t, uintptr_t> range;
 
@@ -133,6 +139,8 @@ void BytePattern::getModuleRanges(string moduleName){
 			}
 
 			this->_ranges.emplace_back(range);
+		} else {
+			printf("Not Match: %s\n", line.c_str());
 		}
 	}
 }
