@@ -5,7 +5,7 @@
 
 
 __attribute__((constructor))
-void hooook() {
+void hook() {
 	BytePattern::StartLog("hook");
 
 	typedef struct _DateFormat {

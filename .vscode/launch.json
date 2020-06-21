@@ -11,11 +11,11 @@
             "program": "/home/gnagaoka/.local/share/Steam/steamapps/common/Crusader Kings II/ck2",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "/home/gnagaoka/repo/vs2019AsmSample/build/sample3/",
+            "cwd": "/home/gnagaoka/repo/ck2so/build/hook/",
             "environment": [
                 {
                     "name": "LD_PRELOAD",
-                    "value": "./libhooook.so"
+                    "value": "./libhook.so"
                 }
             ],
             "externalConsole": false,
