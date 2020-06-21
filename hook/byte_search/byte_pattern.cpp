@@ -78,7 +78,8 @@ BytePattern& BytePattern::setModule(){
 	readlink("/proc/self/exe", prgPath, sizeof(prgPath));
 	sprintf(prgName, "%s", basename(prgPath));
 	
-	return setModule("ck2");
+	// TODO:  findだとテキストが存在するだけで一致してしまうので/とスペースを入れているが自身のプログラムから取得するべき
+	return setModule("/ck2 ");
 }
 
 BytePattern& BytePattern::setModule(string moduleName){
@@ -111,6 +112,8 @@ void BytePattern::getModuleRanges(string moduleName){
 
 			int prot = PROT_READ;
 			unsigned long long start, end;
+
+			// TODO: ここは面倒なことが起きる。プログラムによってはADDRLENは8だったり12だったりするので正規表現でやるべき
 			range.first = std::stoull(line.substr(0, ADDRLEN), 0, 16);
 			range.second = std::stoull(line.substr(ADDRLEN + 1, ADDRLEN), 0, 16);
 

@@ -14,4 +14,6 @@ void hooook() {
 
 	// 日付
 	e |= Date::Init(options);
+
+	printf("hello world\n");
 }
