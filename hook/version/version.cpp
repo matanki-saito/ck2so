@@ -47,7 +47,7 @@ namespace Version {
 			BytePattern::LoggingInfo(versionString(version));
 		}
 		else {
-			version = v3_3_0;
+			version = UNKNOWN;
 		}
 		
 		options->version = version;

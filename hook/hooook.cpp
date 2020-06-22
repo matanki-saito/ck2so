@@ -15,5 +15,8 @@ void hooook() {
 	// 日付
 	e |= Date::Init(options);
 
+	// フォント読み込み
+	e |= Font::Init(options);
+
 	printf("hello world\n");
 }

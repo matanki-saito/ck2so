@@ -178,3 +178,7 @@ namespace Version {
 namespace Date {
 	DllError Init(RunOptions option);
 }
+
+namespace Font {
+	DllError Init(RunOptions option);
+}

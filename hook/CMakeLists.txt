@@ -18,6 +18,7 @@ add_library (hooook SHARED
     "byte_search/byte_pattern.h"
     "byte_search/byte_pattern.cpp"
     "version/version.cpp"
+    "font/font.cpp"
     "date/date.cpp"
     "hooook.cpp")
 set(TARGETS hooook)
