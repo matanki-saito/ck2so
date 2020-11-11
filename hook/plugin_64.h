@@ -182,3 +182,7 @@ namespace Date {
 namespace Font {
 	DllError Init(RunOptions option);
 }
+
+namespace MainText {
+	DllError Init(RunOptions option);
+}

@@ -18,5 +18,6 @@ void hooook() {
 	// フォント読み込み
 	e |= Font::Init(options);
 
-	printf("hello world\n");
+	// メインテキスト
+	e |= MainText::Init(options);
 }

@@ -567,8 +567,6 @@ namespace Injector
 	 */
 	inline memory_pointer_raw GetBranchDestination(memory_pointer_tr at, bool vp = true) {
 		switch (ReadMemory<uint8_t>(at, vp)) {
-
-
 		case 0x48:
 		case 0x4C:
 			switch (ReadMemory<uint8_t>(at + 1, vp)) {
@@ -607,7 +605,7 @@ namespace Injector
 	 *  MakeJMP
 	 *      Creates a JMP instruction at address @at that jumps into address @dest
 	 *      If there was already a branch instruction there, returns the previosly destination of the branch
-	 *      ‘S‘Ì‚Å‚Í14ƒoƒCƒgŽg—p‚·‚é
+	 *      ï¿½Sï¿½Ì‚Å‚ï¿½14ï¿½oï¿½Cï¿½gï¿½gï¿½pï¿½ï¿½ï¿½ï¿½
 	 */
 	inline memory_pointer_raw MakeJMP(memory_pointer_tr at, memory_pointer_raw dest, bool vp = true)
 	{
@@ -616,16 +614,16 @@ namespace Injector
 		auto offset = GetRelativeOffset(dest, at + 1 + 4);
 
 		if (offset > 0x7FFFFFFF) {
-			//WriteMemory<uint8_t>(at, 0x48, vp); // REX.w ] 1=ƒIƒyƒ‰ƒ“ƒhƒTƒCƒY‚ð64ƒrƒbƒg‚É‚·‚éB
-			WriteMemory<uint8_t>(at, 0xFF, vp); // operand‡@
-			// Mod/R: [RIP + disp32]‚ðˆÓ–¡‚·‚é
-			//        Mod: 00b : ƒŒƒWƒXƒ^[+ƒŒƒWƒXƒ^[
-			//        reg: 100b : operand‡A ‡@‚Æ‡A‚Ì‘g‚Ý‡‚í‚¹‚Åjmp‚ðnear‚ÅŽÀŽ{‚É‚È‚é
-			//        r/m: 101b : x86‚¾‚Ædisp32‚Ì‚Ý‚¾‚Á‚½‚ªx64‚Å‚ÍRIPi‚±‚Ì–½—ß‚ÌI‚í‚è‚ÌƒAƒhƒŒƒXj‚ðˆÓ–¡
+			//WriteMemory<uint8_t>(at, 0x48, vp); // REX.w ï¿½] 1=ï¿½Iï¿½yï¿½ï¿½ï¿½ï¿½ï¿½hï¿½Tï¿½Cï¿½Yï¿½ï¿½64ï¿½rï¿½bï¿½gï¿½É‚ï¿½ï¿½ï¿½B
+			WriteMemory<uint8_t>(at, 0xFF, vp); // operandï¿½@
+			// Mod/R: [RIP + disp32]ï¿½ï¿½ï¿½Ó–ï¿½ï¿½ï¿½ï¿½ï¿½
+			//        Mod: 00b : ï¿½ï¿½ï¿½Wï¿½Xï¿½^ï¿½[+ï¿½ï¿½ï¿½Wï¿½Xï¿½^ï¿½[
+			//        reg: 100b : operandï¿½A ï¿½@ï¿½Æ‡Aï¿½Ì‘gï¿½Ýï¿½ï¿½í‚¹ï¿½ï¿½jmpï¿½ï¿½nearï¿½ÅŽï¿½ï¿½{ï¿½É‚È‚ï¿½
+			//        r/m: 101b : x86ï¿½ï¿½ï¿½ï¿½disp32ï¿½Ì‚Ý‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½x64ï¿½Å‚ï¿½RIPï¿½iï¿½ï¿½ï¿½Ì–ï¿½ï¿½ß‚ÌIï¿½ï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½jï¿½ï¿½ï¿½Ó–ï¿½
 			WriteMemory<uint8_t>(at + 1, 0x25, vp);
-			// displacement 32‚É‚Í0‚ð“ü‚ê‚ÄRIP‚Ì‚·‚®Œã‚ë‚ðŒ©‚é‚æ‚¤‚É‚·‚é
+			// displacement 32ï¿½É‚ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½RIPï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½
 			WriteMemory<uint32_t>(at + 2, 0x0, vp);
-			// jmpæ‚ÌƒAƒhƒŒƒX‚ð‘‚­
+			// jmpï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			WriteMemory<memory_pointer_raw>(at + 6, dest, vp);
 		}
 		else {
@@ -648,15 +646,15 @@ namespace Injector
 		auto aOffset = abs((long long)offset);
 
 		if (aOffset > 0xFFFFFFFF) {
-			WriteMemory<uint8_t>(at, 0xFF, vp); // operand ‡@
-			// Mod/R: [RIP + disp32]‚ðˆÓ–¡‚·‚é
-			//        Mod: 00b : ƒŒƒWƒXƒ^[+ƒŒƒWƒXƒ^[
-			//        reg: 010b :  ‡@‚Æ‡A‚Ì‘g‚Ý‡‚í‚¹‚Åcall‚ðnear‚ÅŽÀŽ{‚É‚È‚é
-			//        r/m: 101b : x86‚¾‚Ædisp32‚Ì‚Ý‚¾‚Á‚½‚ªx64‚Å‚ÍRIPi‚±‚Ì–½—ß‚ÌI‚í‚è‚ÌƒAƒhƒŒƒXj‚ðˆÓ–¡
+			WriteMemory<uint8_t>(at, 0xFF, vp); // operand ï¿½@
+			// Mod/R: [RIP + disp32]ï¿½ï¿½ï¿½Ó–ï¿½ï¿½ï¿½ï¿½ï¿½
+			//        Mod: 00b : ï¿½ï¿½ï¿½Wï¿½Xï¿½^ï¿½[+ï¿½ï¿½ï¿½Wï¿½Xï¿½^ï¿½[
+			//        reg: 010b :  ï¿½@ï¿½Æ‡Aï¿½Ì‘gï¿½Ýï¿½ï¿½í‚¹ï¿½ï¿½callï¿½ï¿½nearï¿½ÅŽï¿½ï¿½{ï¿½É‚È‚ï¿½
+			//        r/m: 101b : x86ï¿½ï¿½ï¿½ï¿½disp32ï¿½Ì‚Ý‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½x64ï¿½Å‚ï¿½RIPï¿½iï¿½ï¿½ï¿½Ì–ï¿½ï¿½ß‚ÌIï¿½ï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½jï¿½ï¿½ï¿½Ó–ï¿½
 			WriteMemory<uint8_t>(at + 1, 0x15, vp);
-			// displacement 32‚É‚Í0‚ð“ü‚ê‚ÄRIP‚Ì‚·‚®Œã‚ë‚ðŒ©‚é‚æ‚¤‚É‚·‚é
+			// displacement 32ï¿½É‚ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½RIPï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½
 			WriteMemory<uint32_t>(at + 2, 0x0, vp);
-			// callæ‚ÌƒAƒhƒŒƒX‚ð‘‚­
+			// callï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			WriteMemory<memory_pointer_raw>(at + 6, dest, vp);
 		}
 		else {
@@ -673,15 +671,15 @@ namespace Injector
 		auto aOffset = abs((long long)offset);
 
 		if (aOffset > 0xFFFFFFFF) {
-			WriteMemory<uint8_t>(at, 0xFF, vp); // operand ‡@
-			// Mod/R: [RIP + disp32]‚ðˆÓ–¡‚·‚é
-			//        Mod: 00b : ƒŒƒWƒXƒ^[+ƒŒƒWƒXƒ^[
-			//        reg: 010b :  ‡@‚Æ‡A‚Ì‘g‚Ý‡‚í‚¹‚Åcall‚ðnear‚ÅŽÀŽ{‚É‚È‚é
-			//        r/m: 101b : x86‚¾‚Ædisp32‚Ì‚Ý‚¾‚Á‚½‚ªx64‚Å‚ÍRIPi‚±‚Ì–½—ß‚ÌI‚í‚è‚ÌƒAƒhƒŒƒXj‚ðˆÓ–¡
+			WriteMemory<uint8_t>(at, 0xFF, vp); // operand ï¿½@
+			// Mod/R: [RIP + disp32]ï¿½ï¿½ï¿½Ó–ï¿½ï¿½ï¿½ï¿½ï¿½
+			//        Mod: 00b : ï¿½ï¿½ï¿½Wï¿½Xï¿½^ï¿½[+ï¿½ï¿½ï¿½Wï¿½Xï¿½^ï¿½[
+			//        reg: 010b :  ï¿½@ï¿½Æ‡Aï¿½Ì‘gï¿½Ýï¿½ï¿½í‚¹ï¿½ï¿½callï¿½ï¿½nearï¿½ÅŽï¿½ï¿½{ï¿½É‚È‚ï¿½
+			//        r/m: 101b : x86ï¿½ï¿½ï¿½ï¿½disp32ï¿½Ì‚Ý‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½x64ï¿½Å‚ï¿½RIPï¿½iï¿½ï¿½ï¿½Ì–ï¿½ï¿½ß‚ÌIï¿½ï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½jï¿½ï¿½ï¿½Ó–ï¿½
 			WriteMemory<uint8_t>(at + 1, 0x15, vp);
-			// displacement 32‚É‚Í0‚ð“ü‚ê‚ÄRIP‚Ì‚·‚®Œã‚ë‚ðŒ©‚é‚æ‚¤‚É‚·‚é
+			// displacement 32ï¿½É‚ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½RIPï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½
 			WriteMemory<uint32_t>(at + 2, 0x0, vp);
-			// callæ‚ÌƒAƒhƒŒƒX‚ð‘‚­
+			// callï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			WriteMemory<memory_pointer_raw>(at + 6, dest, vp);
 
 			return at + 14;
