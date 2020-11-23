@@ -4,6 +4,7 @@ project(hookProject CXX ASM_NASM)
 find_package(Boost REQUIRED COMPONENTS system)
 include_directories(Boost::boost)
 
+set(CMAKE_ASM_NASM_FLAGS_DEBUG "-g -Fdwarf")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC") 
 set(TARGETS hooook)
 
