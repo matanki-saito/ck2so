@@ -27,8 +27,8 @@ namespace MainText {
             if (BytePattern::temp_instance().has_size(1, u8"テキスト処理ループ１の文字取得先")) {
                 uintptr_t address = BytePattern::temp_instance().get_first().address();
 
-                // mov     ds:src[rdx], cl
-                mainTextProc1ReturnAddress = address + 0x11;
+                // jz   short loc_xxxxx
+                mainTextProc1ReturnAddress = address + 0x1F;
 
                 Injector::MakeJMP(address,mainTextProc1,true);
 			}

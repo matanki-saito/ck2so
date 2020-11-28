@@ -21,59 +21,58 @@ mainTextProc1JmpAddress: DQ 0
 [SECTION .text]
 mainTextProc1:
     movsxd  rax, ebp
-    movzx   ecx, BYTE [rax+0x2418f00]
     movsxd  rdx, ebx
-    lea     r14, [rdx+1]
 
-    push QWORD [rel mainTextProc1ReturnAddress]
-    ret
-
-mainTextProc2:
-    cmp     BYTE [r12 + rcx], ESCAPE_SEQ_1
+    cmp     BYTE [rax+0x2418f00], ESCAPE_SEQ_1
     jz      .JMP_A
-    cmp     BYTE [r12 + rcx], ESCAPE_SEQ_2
+    cmp     BYTE [rax+0x2418f00], ESCAPE_SEQ_2
     jz      .JMP_B
-    cmp     BYTE [r12 + rcx], ESCAPE_SEQ_3
+    cmp     BYTE [rax+0x2418f00], ESCAPE_SEQ_3
     jz      .JMP_C
-    cmp     BYTE [r12 + rcx], ESCAPE_SEQ_4
+    cmp     BYTE [rax+0x2418f00], ESCAPE_SEQ_4
     jz      .JMP_D
-    movzx   edx, BYTE [r12 + rcx]
+
+    movzx   ecx, BYTE [rax+0x2418f00]
+    lea     r14, [rdx+1]
+    mov     BYTE [rdx+0x2419f40],cl
+    cmp     BYTE [rsp+0x518-0x438], 0
     jmp     .JMP_E
 
 .JMP_A:
-    movzx   edx, WORD [r12 + rcx + 1]
+    movzx   ecx, WORD [rax+0x2418f00+1]
+    mov     BYTE [rdx+0x2419f40],ESCAPE_SEQ_1
     jmp     .JMP_F
 
 .JMP_B:
-    movzx   edx, WORD [r12 + rcx + 1]
-    sub     edx, SHIFT_2
+    movzx   ecx, WORD [rax+0x2418f00+1]
+    mov     BYTE [rdx+0x2419f40],ESCAPE_SEQ_2
+    sub     ecx, SHIFT_2
     jmp     .JMP_F
 
 .JMP_C:
-    movzx   edx, WORD [r12 + rcx + 1]
-    add     edx, SHIFT_3
+    movzx   ecx, WORD [rax+0x2418f00+1]
+    mov     BYTE [rdx+0x2419f40],ESCAPE_SEQ_3
+    add     ecx, SHIFT_3
     jmp     .JMP_F
 
 .JMP_D:
-    movzx   edx, WORD [r12 + rcx + 1]
-    add     edx, SHIFT_4
+    movzx   ecx, WORD [rax+0x2418f00+1]
+    mov     BYTE [rdx+0x2419f40],ESCAPE_SEQ_4
+    add     ecx, SHIFT_4
 
 .JMP_F:
-    movzx   edx, dx
-    add     ebx, 2
-    cmp     edx, NO_FONT
-
+    movzx   ecx, cx
+    cmp     ecx, NO_FONT
     ja      .JMP_E
-    mov     edx, NOT_DEF
+    mov     ecx, NOT_DEF
+    movsxd  rcx, ecx
+
+    mov     WORD [rdx+0x2419f40+1],cx
+    add     ebp, 2
+    add     r14d,2
+
+    cmp     r14d,r14d
 
 .JMP_E:
-    mov     rdx, [r12 + rcx * 8 + 0x0D0]
-
-    test    rdx, rdx
-
-    jz      mainTextProc1JmpAddress wrt ..plt
-    mov     ecx, DWORD [rdx + 0x0C]
-
-    mov     rsi, mainTextProc1ReturnAddress
-    mov     rsi, [rsi]
-    jmp     rsi
+    push    QWORD [rel mainTextProc1ReturnAddress]
+    ret
