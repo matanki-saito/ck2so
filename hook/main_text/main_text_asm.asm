@@ -11,12 +11,13 @@
 %define NOT_DEF         0x2026
 
 GLOBAL mainTextProc1
+GLOBAL mainTextProc2
 GLOBAL mainTextProc1ReturnAddress
-GLOBAL mainTextProc1JmpAddress
+GLOBAL mainTextProc2ReturnAddress
 
 [SECTION .data]
 mainTextProc1ReturnAddress: DQ 0
-mainTextProc1JmpAddress: DQ 0
+mainTextProc2ReturnAddress: DQ 0
 
 [SECTION .text]
 mainTextProc1:
@@ -76,3 +77,12 @@ mainTextProc1:
 .JMP_E:
     push    QWORD [rel mainTextProc1ReturnAddress]
     ret
+
+mainTextProc2:
+    movsxd  r14, r13d
+    movzx   eax, BYTE [r14+0x2419700]
+    cmp     BYTE [rsp+0x518-0x438], 0
+
+    push    QWORD [rel mainTextProc2ReturnAddress]
+    ret
+
