@@ -102,10 +102,10 @@ void BytePattern::getModuleRanges(string moduleName){
 	std::string maps = "/proc/self/maps";
 	std::fstream fs(maps, std::ios::in);
 
-	if(moduleName == "/usr/bin/bash"){
-		// TODO: おそらくgdb関連だと思うがここに入ってくるルートがある
-		return;
-	}
+    if(moduleName == "/usr/bin/bash"){
+        // TODO: おそらくgdb関連だと思うがここに入ってくるルートがある
+        return;
+    }
 
 	printf("moduleName: %s\n", moduleName.c_str());
 

@@ -64,13 +64,14 @@ mainTextProc1:
 .JMP_F:
     movzx   ecx, cx
     cmp     ecx, NO_FONT
-    ja      .JMP_E
+    ja      .JMP_G
     mov     ecx, NOT_DEF
+.JMP_G:
     movsxd  rcx, ecx
-
     mov     WORD [rdx+0x2419f40+1],cx
     add     ebp, 2
-    add     r14d,2
+
+    lea     r14, [rdx + 3]
 
     cmp     r14d,r14d
 
@@ -80,9 +81,45 @@ mainTextProc1:
 
 mainTextProc2:
     movsxd  r14, r13d
+
+    cmp     BYTE [r14+0x2419700], ESCAPE_SEQ_1
+    jz      .JMP_A
+    cmp     BYTE [r14+0x2419700], ESCAPE_SEQ_2
+    jz      .JMP_B
+    cmp     BYTE [r14+0x2419700], ESCAPE_SEQ_3
+    jz      .JMP_C
+    cmp     BYTE [r14+0x2419700], ESCAPE_SEQ_4
+    jz      .JMP_D
     movzx   eax, BYTE [r14+0x2419700]
     cmp     BYTE [rsp+0x518-0x438], 0
+    jmp     .JMP_E
 
+.JMP_A:
+    movzx   eax, WORD [r14+0x2419700+1]
+    jmp     .JMP_F
+.JMP_B:
+    movzx   eax, WORD [r14+0x2419700+1]
+    sub     eax, SHIFT_2
+    jmp     .JMP_F
+.JMP_C:
+    movzx   eax, WORD [r14+0x2419700+1]
+    add     eax, SHIFT_3
+    jmp     .JMP_F
+.JMP_D:
+    movzx   eax, WORD [r14+0x2419700+1]
+    add     eax, SHIFT_4
+.JMP_F:
+    movzx   eax, ax
+    cmp     eax, NO_FONT
+    ja      .JMP_G
+    mov     eax, NOT_DEF
+.JMP_G:
+    add     r13d,2
+    movsxd  rax, eax
+    test    rax,rax ; jzをtrueにする
+    mov     rbx, QWORD [rsp + 0x518 - 0x4F0]
+
+.JMP_E:
     push    QWORD [rel mainTextProc2ReturnAddress]
     ret
 

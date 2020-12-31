@@ -19,5 +19,5 @@ void hooook() {
 	e |= Font::Init(options);
 
 	// メインテキスト
-	e |= MainText::Init(options);
+    e |= MainText::Init(options);
 }
